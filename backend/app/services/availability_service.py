@@ -1,6 +1,10 @@
+from datetime import date
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from app.models import AvailabilitySlot
+
+DEFAULT_SLOT_TIMES = ["17:00", "17:30", "18:00", "18:30", "19:00"]
 
 
 def get_slots(db: Session, doctor_id: int, date: str) -> List[AvailabilitySlot]:
@@ -13,6 +17,34 @@ def get_slots(db: Session, doctor_id: int, date: str) -> List[AvailabilitySlot]:
         .order_by(AvailabilitySlot.slot_time)
         .all()
     )
+
+
+def ensure_default_slots(db: Session, doctor_id: int, slot_date: str) -> List[AvailabilitySlot]:
+    existing = get_slots(db, doctor_id, slot_date)
+    if existing:
+        return existing
+
+    for slot_time in DEFAULT_SLOT_TIMES:
+        db.add(
+            AvailabilitySlot(
+                doctor_id=doctor_id,
+                slot_date=slot_date,
+                slot_time=slot_time,
+                is_booked=False,
+            )
+        )
+
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+
+    return get_slots(db, doctor_id, slot_date)
+
+
+def ensure_profile_default_slots(db: Session, doctor_id: int) -> None:
+    ensure_default_slots(db, doctor_id, str(date.today()))
+    ensure_default_slots(db, doctor_id, "2026-05-12")
 
 
 def get_earliest_available(slots: List[AvailabilitySlot]) -> Optional[str]:

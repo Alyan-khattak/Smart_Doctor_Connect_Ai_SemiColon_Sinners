@@ -5,8 +5,11 @@ pydantic
 pydantic-settings
 python-dotenv
 groq
-resend
 pytest
 httpx
 email-validator
 psycopg2-binary
+passlib
+bcrypt<4.0.0
+python-jose[cryptography]
+python-multipart

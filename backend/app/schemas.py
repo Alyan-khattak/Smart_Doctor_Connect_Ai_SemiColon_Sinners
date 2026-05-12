@@ -4,6 +4,31 @@ from datetime import datetime
 
 
 # ─────────────────────────────────────────────────────────────
+# Auth Schemas
+# ─────────────────────────────────────────────────────────────
+
+class DoctorAuthCreate(BaseModel):
+    full_name: str
+    email: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
+
+class DoctorProfileCreate(BaseModel):
+    specialization: str
+    city: str
+    location: Optional[str] = None
+    consultation_type: str
+    experience_years: int = 0
+    bio: Optional[str] = None
+
+
+# ─────────────────────────────────────────────────────────────
 # Doctor Schemas
 # ─────────────────────────────────────────────────────────────
 

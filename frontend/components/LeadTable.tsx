@@ -12,7 +12,7 @@ export default function LeadTable({ leads }: { leads: ChatbotLead[] }) {
         <thead>
           <tr className="border-b border-slate-200 text-slate-500">
             <th className="text-left py-3 px-4 font-semibold">Patient</th>
-            <th className="text-left py-3 px-4 font-semibold">Contact</th>
+            <th className="text-left py-3 px-4 font-semibold">Email</th>
             <th className="text-left py-3 px-4 font-semibold">Problem</th>
             <th className="text-left py-3 px-4 font-semibold">Status</th>
           </tr>

@@ -108,7 +108,7 @@ Rules:
 - Be warm, professional, and concise (max 2 sentences)
 - Based on state, ask for the next piece of information:
   - START or ASK_NAME: Ask for patient's full name
-  - ASK_CONTACT: Ask for patient's phone number
+  - ASK_CONTACT: Ask for patient's email address for appointment confirmation
   - ASK_PROBLEM: Ask patient to describe their medical concern briefly
   - CONFIRM_DETAILS: Confirm all collected details and say doctor will be notified
 
@@ -132,9 +132,9 @@ def _deterministic_chatbot_reply(doctor_name: str, state: str, collected_data: d
     """Fallback deterministic chatbot replies."""
     replies = {
         "START": f"Dr. {doctor_name} is currently unavailable. I'm the AI assistant. Could you please share your full name so I can notify the doctor?",
-        "ASK_NAME": "Thank you! Could you please provide your contact number (phone) so the doctor can reach you?",
-        "ASK_CONTACT": "Got it! Please briefly describe your medical concern or symptoms.",
-        "ASK_PROBLEM": f"Thank you for sharing that. Let me confirm your details: Name: {collected_data.get('patient_name')}, Contact: {collected_data.get('patient_contact')}, Problem: {collected_data.get('problem')}. I'll notify Dr. {doctor_name} right away.",
-        "CONFIRM_DETAILS": "Your information has been saved. The doctor will contact you as soon as possible.",
+        "ASK_NAME": f"Dr. {doctor_name} is currently unavailable. I'm the AI assistant. Could you please share your full name so I can notify the doctor?",
+        "ASK_CONTACT": "Thank you! Please provide your email address so confirmation and follow-up details can be sent to you.",
+        "ASK_PROBLEM": "Got it! Please briefly describe your medical concern or symptoms.",
+        "CONFIRM_DETAILS": f"Thank you for sharing that. Let me confirm your details: Name: {collected_data.get('patient_name')}, Email: {collected_data.get('patient_contact')}, Problem: {collected_data.get('problem')}. I'll notify Dr. {doctor_name} right away.",
     }
     return replies.get(state, f"I'm here to help connect you with Dr. {doctor_name}. The doctor will be notified of your inquiry.")

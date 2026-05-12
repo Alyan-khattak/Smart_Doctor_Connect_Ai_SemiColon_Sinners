@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import engine, Base
-from app.routes import health, doctors, recommendations, availability, appointments, chatbot, email, dashboard
+from app.routes import health, auth, doctors, recommendations, availability, appointments, chatbot, email, dashboard
 
 # Create all DB tables on startup (SQLite MVP)
 Base.metadata.create_all(bind=engine)
@@ -27,6 +27,7 @@ app.add_middleware(
 
 # Routers
 app.include_router(health.router)
+app.include_router(auth.router)
 app.include_router(doctors.router)
 app.include_router(recommendations.router)
 app.include_router(availability.router)

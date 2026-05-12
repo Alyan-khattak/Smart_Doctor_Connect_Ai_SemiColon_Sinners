@@ -12,10 +12,24 @@ from sqlalchemy.sql import func
 from app.database import Base
 
 
+from app.database import Base
+
+
+class DoctorAuth(Base):
+    __tablename__ = "doctors_auth"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, nullable=False, unique=True, index=True)
+    password_hash = Column(String, nullable=False)
+    full_name = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class Doctor(Base):
     __tablename__ = "doctors"
 
     id = Column(Integer, primary_key=True, index=True)
+    doctor_auth_id = Column(Integer, ForeignKey("doctors_auth.id"), unique=True, nullable=True)
     name = Column(String, nullable=False)
     email = Column(String, nullable=False)
     specialization = Column(String, nullable=False, index=True)

@@ -41,8 +41,8 @@ def book_appointment(
         consultation_type=payload.consultation_type,
     )
 
-    # Send email (non-blocking — failure does not affect response data)
-    email_sent = email_service.send_appointment_email(
+    # Send emails after DB write. Failures do not affect the saved appointment.
+    doctor_email_sent = email_service.send_appointment_email(
         doctor_email=doctor.email,
         doctor_name=doctor.name,
         appointment_id=appt.id,
@@ -53,12 +53,22 @@ def book_appointment(
         appointment_time=appt.appointment_time,
         consultation_type=appt.consultation_type,
     )
+    patient_email_sent = email_service.send_patient_appointment_confirmation(
+        patient_email=appt.patient_contact,
+        doctor_name=doctor.name,
+        appointment_id=appt.id,
+        patient_name=appt.patient_name,
+        problem=appt.problem,
+        appointment_date=appt.appointment_date,
+        appointment_time=appt.appointment_time,
+        consultation_type=appt.consultation_type,
+    )
 
     return {
         "message": "Appointment booked successfully.",
         "appointment_id": appt.id,
         "status": appt.status,
-        "email_sent": email_sent,
+        "email_sent": doctor_email_sent and patient_email_sent,
     }
 
 

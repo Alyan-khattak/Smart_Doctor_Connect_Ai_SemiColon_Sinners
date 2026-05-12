@@ -1,15 +1,39 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { Stethoscope, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Stethoscope, Menu, X, LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isDoctorLoggedIn, setIsDoctorLoggedIn] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const links = [
+  useEffect(() => {
+    const token = localStorage.getItem("doctor_token");
+    setIsDoctorLoggedIn(!!token);
+  }, [pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("doctor_token");
+    setIsDoctorLoggedIn(false);
+    router.push("/");
+  };
+
+  const patientLinks = [
     { href: "/", label: "Home" },
     { href: "/search", label: "Find Doctor" },
-    { href: "/dashboard/doctor", label: "Doctor Dashboard" },
+  ];
+
+  const loggedOutLinks = [
+    { href: "/doctor/login", label: "Doctor Login" },
+    { href: "/doctor/register", label: "Doctor Register" },
+  ];
+
+  const loggedInLinks = [
+    { href: "/dashboard/doctor", label: "Dashboard" },
+    { href: "/doctor/profile", label: "Profile" },
   ];
 
   return (
@@ -28,21 +52,55 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6">
-            {links.map((link) => (
+            {isDoctorLoggedIn ? (
+              <>
+                {loggedInLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <button
+                  onClick={handleLogout}
+                  className="text-sm font-medium text-slate-600 hover:text-red-500 transition-colors flex items-center gap-1"
+                >
+                  <LogOut className="w-4 h-4" /> Logout
+                </button>
+              </>
+            ) : (
+              <>
+                {patientLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                {loggedOutLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </>
+            )}
+
+            {!isDoctorLoggedIn && (
               <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors"
+                href="/search"
+                className="bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors ml-2"
               >
-                {link.label}
+                Find a Doctor
               </Link>
-            ))}
-            <Link
-              href="/search"
-              className="bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-            >
-              Find a Doctor
-            </Link>
+            )}
           </div>
 
           {/* Mobile toggle */}
@@ -58,7 +116,7 @@ export default function Navbar() {
         {/* Mobile nav */}
         {open && (
           <div className="md:hidden pb-4 flex flex-col gap-2">
-            {links.map((link) => (
+            {[...(isDoctorLoggedIn ? loggedInLinks : [...patientLinks, ...loggedOutLinks])].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -68,6 +126,17 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {isDoctorLoggedIn && (
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  handleLogout();
+                }}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 text-left"
+              >
+                Logout
+              </button>
+            )}
           </div>
         )}
       </div>

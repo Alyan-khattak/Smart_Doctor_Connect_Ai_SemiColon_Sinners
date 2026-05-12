@@ -59,3 +59,18 @@
 **Next Step:** Create backend folder structure and core files
 
 ---
+### Entry 002
+
+**Date/Time:** 2026-05-12 14:15 PKT  
+**Module/Task:** Doctor Auth and Email Fix  
+**File:** Multiple  
+**Change Type:** Added/Modified  
+**Before:** MVP without Doctor Auth and Resend API key missing from config template.  
+**After:** Added DoctorAuth table, JWT /auth endpoints, protected /doctors/me/profile and /dashboard/me endpoints. Created Frontend Auth Pages. Added missing .env config logic.   
+**Reason:** User request to add Doctor Auth and fix Email without breaking MVP.  
+**Source Document:** User instructions  
+**Contract Impact:** New endpoints added. Existing endpoints remain public. Dashboard logic updated gracefully. Email sending handles failures cleanly.  
+**Testing Done:** Seeded new DB successfully.  
+**Next Step:** UI check.
+
+---

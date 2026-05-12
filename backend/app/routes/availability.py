@@ -14,7 +14,7 @@ def get_availability(
     date: str,
     db: Session = Depends(get_db),
 ):
-    slots = availability_service.get_slots(db, doctor_id, date)
+    slots = availability_service.ensure_default_slots(db, doctor_id, date)
     earliest = availability_service.get_earliest_available(slots)
 
     slot_list = [

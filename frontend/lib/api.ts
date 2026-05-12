@@ -11,6 +11,9 @@ import {
   ChatbotLeadRequest,
   ChatbotLeadResponse,
   DashboardResponse,
+  TokenResponse,
+  DoctorAuthMe,
+  DoctorProfileRequest,
 } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -97,3 +100,64 @@ export function saveChatbotLead(payload: ChatbotLeadRequest) {
 export function getDoctorDashboard(doctorId: number) {
   return request<DashboardResponse>(`/dashboard/doctor/${doctorId}`);
 }
+
+// --- Auth APIs ---
+
+export function registerDoctor(payload: any) {
+  return request<TokenResponse>("/auth/doctor/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function loginDoctor(payload: any) {
+  const formBody = new URLSearchParams();
+  formBody.append("username", payload.email);
+  formBody.append("password", payload.password);
+
+  return request<TokenResponse>("/auth/doctor/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formBody.toString(),
+  });
+}
+
+export function getDoctorMe(token: string) {
+  return request<DoctorAuthMe>("/auth/doctor/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export function createMyDoctorProfile(token: string, payload: DoctorProfileRequest) {
+  return request<Doctor>("/doctors/me/profile", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateMyDoctorProfile(token: string, payload: DoctorProfileRequest) {
+  return request<Doctor>("/doctors/me/profile", {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function getDoctorMyDashboard(token: string) {
+  return request<DashboardResponse>("/dashboard/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+

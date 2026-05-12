@@ -34,7 +34,7 @@ export default function ChatPage() {
           {
             id: "init",
             sender: "ai",
-            text: `Dr. ${doc.name} is currently ${doc.is_available ? "available" : "unavailable"}. I'm the AI assistant. I'll collect your details so the doctor can follow up with you. What is your full name?`,
+            text: `Dr. ${doc.name} is currently ${doc.is_available ? "available" : "unavailable"}. I'm the patient-side AI assistant. I'll collect your details so the doctor can follow up by email. What is your full name?`,
           },
         ]);
         setState("ASK_NAME");
@@ -95,7 +95,7 @@ export default function ChatPage() {
           {
             id: "lead-saved",
             sender: "system",
-            text: `Your details have been saved (Lead #${lead.lead_id}). The doctor will contact you soon. ${lead.email_sent ? "Doctor has been notified via email." : ""}`,
+            text: `Your details have been saved (Lead #${lead.lead_id}). The doctor will contact you by email soon. ${lead.email_sent ? "Doctor has been notified via email." : ""}`,
           },
         ]);
       }

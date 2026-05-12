@@ -6,9 +6,13 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL:-sqlite:///./smart_doctor.db}
       - GROQ_API_KEY=${GROQ_API_KEY:-}
-      - RESEND_API_KEY=${RESEND_API_KEY:-}
-      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-Smart Doctor Connect AI <onboarding@resend.dev>}
-      - RESEND_TEST_TO=${RESEND_TEST_TO:-}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USERNAME=${SMTP_USERNAME:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL:-sender_email}
+      - SMTP_FROM_NAME=${SMTP_FROM_NAME:-Smart Doctor Connect AI}
+      - ENABLE_EMAIL=${ENABLE_EMAIL:-true}
       - CORS_ORIGINS=http://localhost:3000
     volumes:
       - ./backend/app:/app/app

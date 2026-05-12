@@ -1,5 +1,29 @@
 // TypeScript types matching backend API contracts exactly (snake_case as per AGENTS.md)
 
+export type TokenResponse = {
+  access_token: string;
+  token_type: string;
+};
+
+export type DoctorAuthMe = {
+  auth: {
+    id: number;
+    email: string;
+    full_name: string;
+  };
+  has_profile: boolean;
+  profile_id: number | null;
+};
+
+export type DoctorProfileRequest = {
+  specialization: string;
+  city: string;
+  location?: string | null;
+  consultation_type: "online" | "physical" | "both";
+  experience_years: number;
+  bio?: string | null;
+};
+
 export type Doctor = {
   id: number;
   name: string;

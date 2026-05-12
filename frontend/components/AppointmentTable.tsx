@@ -12,7 +12,7 @@ export default function AppointmentTable({ appointments }: { appointments: Appoi
         <thead>
           <tr className="border-b border-slate-200 text-slate-500">
             <th className="text-left py-3 px-4 font-semibold">Patient</th>
-            <th className="text-left py-3 px-4 font-semibold">Contact</th>
+            <th className="text-left py-3 px-4 font-semibold">Email</th>
             <th className="text-left py-3 px-4 font-semibold">Date</th>
             <th className="text-left py-3 px-4 font-semibold">Time</th>
             <th className="text-left py-3 px-4 font-semibold">Type</th>

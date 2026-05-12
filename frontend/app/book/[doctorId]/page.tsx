@@ -102,7 +102,7 @@ export default function BookingPage() {
             Appointment #{success.appointment_id} — Status: <strong>{success.status}</strong>
           </p>
           <p className="text-xs text-green-600">
-            {success.email_sent ? "Doctor notified via email." : "Email notification pending."}
+            {success.email_sent ? "Doctor and patient notified via email." : "Appointment saved. Email notification is pending."}
           </p>
         </div>
       )}
@@ -152,12 +152,12 @@ export default function BookingPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="patient-contact">Contact Number</label>
+            <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="patient-contact">Patient Email</label>
             <input
               id="patient-contact"
               required
-              type="text"
-              placeholder="03001234567"
+              type="email"
+              placeholder="patient@example.com"
               value={form.patient_contact}
               onChange={(e) => setForm((f) => ({ ...f, patient_contact: e.target.value }))}
               className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-slate-50"
@@ -208,7 +208,7 @@ export default function BookingPage() {
           </div>
 
           {/* Time slots */}
-          {availability && availability.slots.length > 0 && (
+          {availability && availability.slots.length > 0 ? (
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Select Time Slot
@@ -238,6 +238,10 @@ export default function BookingPage() {
                   </button>
                 ))}
               </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              No slots are available for this date yet. Please choose another date.
             </div>
           )}
 
